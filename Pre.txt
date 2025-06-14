@@ -1,0 +1,44 @@
+TODO:
+
+Spin up a kafka image using podman and exec into it
+Create a topic
+Publish a message to that topic
+Read the published message
+
+Create a new repo
+Create a new project via spring initializr
+Add the kafka dependency to your project
+Take a look at the producer architecture and java code example
+
+*Optional - Docker compose file
+
+Create a topic called string_topic
+Write a kafka producer which will write strings to the above mentioned topic
+
+
+
+
+
+PowerShell (using podman):
+
+podman machine rm podman-machine-default (if needed)
+podman machine init new-machine
+podman machine start new-machine
+podman run -d --name zookeeper -p 2181:2181 -e ZOOKEEPER_CLIENT_PORT=2181 confluentinc/cp-zookeeper:latest
+
+podman run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=host.containers.internal:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 confluentinc/cp-kafka:7.5.0
+
+podman exec -it kafka bash
+kafka-topics --create --topic string_topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+kafka-console-producer --broker-list localhost:9092 --topic string_topic
+Write a message from keyboard.
+ctrl + C
+
+
+
+Open another terminal:
+
+Invoke-WebRequest -Uri "https://start.spring.io/starter.zip" -Method POST -ContentType "application/x-www-form-urlencoded" -Body "dependencies=web,kafka&type=maven-project&language=java&name=kafka-example&groupId=com.example&artifactId=kafka-example" -OutFile "kafka-example.zip"
+
+Expand-Archive kafka-example.zip
+cd kafka-example
