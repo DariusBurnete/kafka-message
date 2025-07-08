@@ -12,8 +12,9 @@ public class MessageProducer {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String message) {
-        kafkaTemplate.send(TOPIC, message);
-        System.out.println("Message sent: " + message);
+    public void sendMessage(String key, String message) {
+        kafkaTemplate.send("string_topic", key, message);
+        System.out.printf("Message sent with key '%s': %s%n", key, message);
     }
+
 }
