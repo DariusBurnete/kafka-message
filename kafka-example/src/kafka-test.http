@@ -1,0 +1,2 @@
+### Send Kafka message
+POST http://localhost:8080/kafka/send?key=testKey&message=HelloKafka
